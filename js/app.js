@@ -59,6 +59,7 @@ app.controller("BayesController", function() {
         priors[j]=hypothese.probability/sum;
       }
     }
+    this.results=[];
     for (var i=0; i<priors.length; i++) {
       this.results[i]={
         desc:this.hypotheses[i].desc,
@@ -66,9 +67,6 @@ app.controller("BayesController", function() {
       };
       console.log(this.results[i]);
     };
-    // this.results.sort(function (a,b) {
-    //   return -(a.value-b.value);
-    // });
   }
 });
 

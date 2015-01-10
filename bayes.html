@@ -59,7 +59,7 @@
 </form>
   <br />
   <h2>Results</h2>
-  <div ng-repeat="result in bayes.results">{{result.desc}} {{result.value}}%</div>
+  <div ng-repeat="result in bayes.results|orderBy:'-value'">{{result.desc}} {{result.value}}%</div>
 </div>
 </div>
 </body>
