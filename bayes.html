@@ -13,7 +13,7 @@
 </head>
 <body ng-controller="BayesController as bayes">
 <div class="container">
-<h1 class="header">Bayesian inference tool</h1>
+<h1 class="">Bayesian inference tool</h1>
 <div ng-show="bayes.stage=='init'">
 <h2>Configure</h2>
 <form name="form">
@@ -30,10 +30,10 @@
 </div>
 <div ng-show="bayes.stage=='inference'">
 <form name="form2">
-  <table class="col-xs-12">
+  <table class="table">
     <tr>
-      <td>Evidences/Hypotheses</td>
-      <td ng-repeat="hypothese in bayes.hypotheses"><strong>{{hypothese.desc|limitTo:30}}</strong></td>
+      <th>Evidences/Hypotheses</th>
+      <th ng-repeat="hypothese in bayes.hypotheses">{{hypothese.desc|limitTo:30}}</th>
     </tr>
       <tr ng-repeat="evidence in bayes.evidences">
       <td>
@@ -58,8 +58,12 @@
   </table>
 </form>
   <br />
+  <br />
   <h2>Results</h2>
-  <div ng-repeat="result in bayes.results|orderBy:'-value'">{{result.desc}} {{result.value}}%</div>
+  <table class="table">
+    <tr><th>Hypothese</th><th>Probability</th></tr>
+    <tr ng-repeat="result in bayes.results|orderBy:'-value'"><td>{{result.desc}}</td><td>{{result.value}}%</td></tr>
+  </table>
 </div>
 </div>
 </body>

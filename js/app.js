@@ -20,12 +20,9 @@ app.controller("BayesController", function() {
     this.addEvidence();
   };
   this.addEvidence = function(lastEvidence) {
-    console.log("addEvidence called");
-    console.log(lastEvidence);
     if (lastEvidence) {
       lastEvidence.inEdit=false;
     }
-    console.log(lastEvidence);
     this.calc();
     var evidence = {
       desc:"",
@@ -63,9 +60,8 @@ app.controller("BayesController", function() {
     for (var i=0; i<priors.length; i++) {
       this.results[i]={
         desc:this.hypotheses[i].desc,
-        value:new Number(Math.round(priors[i]*100*100)/100.0)
+        value:(Math.round(priors[i]*100*100)/100.0)
       };
-      console.log(this.results[i]);
     };
   }
 });
@@ -76,7 +72,6 @@ app.directive('focusMe', function($timeout, $parse) {
     link: function(scope, element, attrs) {
       var model = $parse(attrs.focusMe);
       scope.$watch(model, function(value) {
-        console.log('value=',value);
         if(value === true) {
           $timeout(function() {
             element[0].focus();
