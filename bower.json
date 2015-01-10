@@ -1,0 +1,21 @@
+{
+  "name": "bayes",
+  "version": "0.0.1",
+  "authors": [
+    "przemelek <przemelek@gmail.com>"
+  ],
+  "description": "Simple app for testing different hypothesis with Bayes theoerm",
+  "main": "bayes.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "resolutions": {
+    "angular": "1.3.8"
+  }
+}

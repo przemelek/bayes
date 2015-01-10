@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="bayesApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bayes.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+</head>
+<body ng-controller="BayesController as bayes">
+<div class="container">
+<h1 class="header">Bayesian inference tool</h1>
+<div ng-show="bayes.stage=='init'">
+<h2>Configure</h2>
+<form name="form">
+<input focus-me="bayes.stage=='init'" type="number" min="2" step="1" required class="form-control" ng-model="bayes.numberOfHypotheses" placeholder="How many hypotheses"/>
+<button ng-disabled="form.$invalid" class="btn btn-success pull-right" ng-click="bayes.addHypotheses()">Add hypotheses</button>
+</form>
+</div>
+<div ng-show="bayes.stage=='addingHypotheses'">
+<h2>Add hypotheses</h2>
+<div ng-repeat="hypothese in bayes.hypotheses">Hypothese #{{$index+1}}:
+<input focus-me="bayes.stage=='addingHypotheses' && $index==0" class="form-control" ng-model="hypothese.desc" />
+</div>
+<button class="btn btn-success" ng-click="bayes.inference()">Start</button>
+</div>
+<div ng-show="bayes.stage=='inference'">
+<form name="form2">
+  <table class="col-xs-12">
+    <tr>
+      <td>Evidences/Hypotheses</td>
+      <td ng-repeat="hypothese in bayes.hypotheses"><strong>{{hypothese.desc|limitTo:30}}</strong></td>
+    </tr>
+      <tr ng-repeat="evidence in bayes.evidences">
+      <td>
+        <input focus-me="bayes.stage=='inference'" required ng-show="evidence.inEdit" class="form-control" ng-model="evidence.desc" />
+        <span ng-hide="evidence.inEdit"><strong>{{evidence.desc|limitTo:30}}</strong></span>
+      </td>
+      <td ng-repeat="hypothese in evidence.hypotheses">
+        <input required ng-show="evidence.inEdit" type="number" min="0" max="1" step="0.1" class="form-control" ng-model="hypothese.likelihood" />
+        <span ng-hide="evidence.inEdit">{{hypothese.likelihood}}</span>
+      </td>
+      <td>
+        <button ng-disabled="form2.$invalid || !evidence.inEdit" class="btn btn-success" ng-show="evidence.inEdit" ng-click="bayes.addEvidence(evidence)">Add</button>
+      </td>
+      <tr/>
+    <tr>
+      <td>Probability:</td>
+      <td ng-repeat="result in bayes.results">
+        {{result.value}}%
+      </td>
+      <td></td>
+    </tr>
+  </table>
+</form>
+  <br />
+  <h2>Results</h2>
+  <div ng-repeat="result in bayes.results">{{result.desc}} {{result.value}}%</div>
+</div>
+</div>
+</body>
+</html>
