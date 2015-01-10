@@ -63,11 +63,12 @@ app.controller("BayesController", function() {
       this.results[i]={
         desc:this.hypotheses[i].desc,
         value:new Number(Math.round(priors[i]*100*100)/100.0)
-      }
+      };
+      console.log(this.results[i]);
     };
-    this.results.sort(function (a,b) {
-      return -(a.value-b.value);
-    });
+    // this.results.sort(function (a,b) {
+    //   return -(a.value-b.value);
+    // });
   }
 });
 
