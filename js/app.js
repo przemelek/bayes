@@ -1,36 +1,36 @@
 var app = angular.module("bayesApp", ["ui.bootstrap"]);
 
-app.controller("BayesController", function() {
-  this.stage = "init";
-  this.results = [];
-  this.evidences = [];
-  this.addHypotheses = function() {
-    this.stage = "addingHypotheses";
-    this.hypotheses = [];
-    this.evidences= [] ;
-    for (var i=0; i<this.numberOfHypotheses; i++) {
-      this.hypotheses.push({
-        prior:1.0/this.numberOfHypotheses,
+app.controller("BayesController", ["$scope", function($scope) {
+  $scope.stage = "init";
+  $scope.results = [];
+  $scope.evidences = [];
+  $scope.addHypotheses = function() {
+    $scope.stage = "addingHypotheses";
+    $scope.hypotheses = [];
+    $scope.evidences= [] ;
+    for (var i=0; i<$scope.numberOfHypotheses; i++) {
+      $scope.hypotheses.push({
+        prior:1.0/$scope.numberOfHypotheses,
         desc:"",
       });
     }
   };
-  this.inference = function() {
-    this.stage = "inference";
-    this.addEvidence();
+  $scope.inference = function() {
+    $scope.stage = "inference";
+    $scope.addEvidence();
   };
-  this.addEvidence = function(lastEvidence) {
+  $scope.addEvidence = function(lastEvidence) {
     if (lastEvidence) {
       lastEvidence.inEdit=false;
     }
-    this.calc();
+    $scope.calc();
     var evidence = {
       desc:"",
       inEdit:true,
       hypotheses:[]
     };
-    this.evidences.push(evidence);
-    for (var i=0; i<this.numberOfHypotheses; i++) {
+    $scope.evidences.push(evidence);
+    for (var i=0; i<$scope.numberOfHypotheses; i++) {
       var hypothese = {
         index:i,
         probability:0.0
@@ -38,13 +38,13 @@ app.controller("BayesController", function() {
       evidence.hypotheses.push(hypothese);
     }
   }
-  this.calc = function() {
+  $scope.calc = function() {
     var priors = [];
-    for (var i=0; i<this.numberOfHypotheses; i++) {
-      priors[i]=this.hypotheses[i].prior;
+    for (var i=0; i<$scope.numberOfHypotheses; i++) {
+      priors[i]=$scope.hypotheses[i].prior;
     }
-    for (var i=0; i<this.evidences.length; i++) {
-      var evidence = this.evidences[i];
+    for (var i=0; i<$scope.evidences.length; i++) {
+      var evidence = $scope.evidences[i];
       var sum = 0.0;
       for (var j=0; j<evidence.hypotheses.length; j++) {
         var hypothese = evidence.hypotheses[j];
@@ -56,15 +56,15 @@ app.controller("BayesController", function() {
         priors[j]=hypothese.probability/sum;
       }
     }
-    this.results=[];
+    $scope.results=[];
     for (var i=0; i<priors.length; i++) {
-      this.results[i]={
-        desc:this.hypotheses[i].desc,
+      $scope.results[i]={
+        desc:$scope.hypotheses[i].desc,
         value:(Math.round(priors[i]*100*100)/100.0)
       };
     };
   }
-});
+}]);
 
 app.directive('focusMe', function($timeout, $parse) {
   return {
