@@ -43,19 +43,17 @@ app.controller("BayesController", ["$scope", function($scope) {
     for (var i=0; i<$scope.numberOfHypotheses; i++) {
       priors[i]=$scope.hypotheses[i].prior;
     }
-    for (var i=0; i<$scope.evidences.length; i++) {
-      var evidence = $scope.evidences[i];
+    angular.forEach($scope.evidence, function(evidence) {
       var sum = 0.0;
-      for (var j=0; j<evidence.hypotheses.length; j++) {
-        var hypothese = evidence.hypotheses[j];
+      angular.forEach(evidence.hypotheses, function(hypothese) {
         hypothese.probability=priors[j]*hypothese.likelihood;
         sum+=hypothese.probability;
-      }
+      });
       for (var j=0; j<evidence.hypotheses.length; j++) {
         var hypothese = evidence.hypotheses[j];
         priors[j]=hypothese.probability/sum;
       }
-    }
+    });
     $scope.results=[];
     for (var i=0; i<priors.length; i++) {
       $scope.results[i]={
