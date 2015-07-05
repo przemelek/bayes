@@ -1,0 +1,12 @@
+{
+  "name": "Bayesian inference tool",
+  "description": "Bayesian inference tool",
+  "version": "0.2",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons" : { "128":"Bayes_icon.svg.png"}
+}

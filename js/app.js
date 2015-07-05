@@ -1,9 +1,16 @@
 var app = angular.module("bayesApp", ["ui.bootstrap"]);
 
 app.controller("BayesController", ["$scope", "$log", function($scope, $log) {
-  $scope.stage = "init";
-  $scope.results = [];
-  $scope.evidences = [];
+
+  $scope.clear = function() {
+    $scope.stage = "init";
+    $scope.results = [];
+    $scope.evidences = [];
+    $scope.numberOfHypotheses = "";
+  }
+
+  $scope.clear();
+
   $scope.addHypotheses = function() {
     $scope.stage = "addingHypotheses";
     $scope.hypotheses = [];
@@ -37,6 +44,14 @@ app.controller("BayesController", ["$scope", "$log", function($scope, $log) {
       };
       evidence.hypotheses.push(hypothese);
     }
+  }
+  $scope.deleteEvidence = function(i) {
+    var newEvidences = [];
+    for (var j=0; j<$scope.evidences.length; j++) {
+      if (j!=i) newEvidences.push($scope.evidences[j]);
+    }
+    $scope.evidences = newEvidences;
+    $scope.calc();
   }
   $scope.calc = function() {
     var priors = [];
@@ -85,5 +100,19 @@ app.directive('focusMe', function($timeout, $parse) {
       //   scope.$apply(model.assign(scope, false));
       // });
     }
+  };
+});
+
+app.directive('onEnter', function () {
+  return function (scope, element, attrs) {
+    element.bind("keydown keypress", function (event) {
+      if(event.which === 13) {
+        scope.$apply(function (){
+          scope.$eval(attrs.onEnter);
+        });
+
+        event.preventDefault();
+      }
+    });
   };
 });

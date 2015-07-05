@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html ng-app="bayesApp">
+<html ng-app="bayesApp" ng-csp>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="js/app.js"></script>
 
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bayes.css">
-  <!-- <link rel="stylesheet" href="css/angular-csp.css"> -->
+  <link rel="stylesheet" href="css/angular-csp.css">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 
 </head>
 <body ng-controller="BayesController">
 <div class="container">
-<h1 class="">Bayesian inference tool</h1>
+<h1 class=""><a href="" ng-click="clear()">Bayesian inference tool</a></h1>
 <div ng-show="stage=='init'">
 <h2>Configure</h2>
 <form name="form">
-<input focus-me="stage=='init'" type="number" min="2" step="1" required class="form-control" ng-model="numberOfHypotheses" placeholder="How many hypotheses"/>
+<input focus-me="stage=='init'" on-enter="!form.$invalid && addHypotheses()" type="number" min="2" step="1" required class="form-control" ng-model="numberOfHypotheses" placeholder="How many hypotheses"/>
 <button ng-disabled="form.$invalid" class="btn btn-success pull-right" ng-click="addHypotheses()">Add hypotheses</button>
 </form>
 </div>
@@ -47,6 +48,7 @@
       </td>
       <td>
         <button ng-disabled="evidenceForm.$invalid || !evidence.inEdit" class="btn btn-success" ng-show="evidence.inEdit" ng-click="addEvidence(evidence)">Add</button>
+        <button class="btn btn-success" ng-hide="evidence.inEdit" ng-click="deleteEvidence($index)">X</button>
       </td>
       <tr/>
     <tr>
